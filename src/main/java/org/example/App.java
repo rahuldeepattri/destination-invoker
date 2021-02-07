@@ -5,20 +5,22 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.testutil.MockDestination;
 import com.sap.cloud.sdk.testutil.MockUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Hello world!
  */
 //mvn exec:java -Dexec.mainClass="org.example.App"
+////mvn clean package exec:java -Dexec.mainClass="org.example.App"
 public class App {
     public static void main(String[] args) throws Exception {
-        mockExample();
         noAuth();
     }
 
@@ -45,6 +47,8 @@ public class App {
         HttpClient httpClient = HttpClientAccessor.getHttpClient(httpDestination);
 
         HttpResponse execute = httpClient.execute(new HttpGet());
-        execute.getEntity().writeTo(System.out);
+        String result = IOUtils.toString(execute.getEntity().getContent(), StandardCharsets.UTF_8);
+
+        System.out.println(result);
     }
 }
