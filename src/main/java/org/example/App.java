@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpGet;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Hello world!
@@ -21,7 +23,14 @@ import java.nio.charset.StandardCharsets;
 ////mvn clean package exec:java -Dexec.mainClass="org.example.App"
 public class App {
     public static void main(String[] args) throws Exception {
-        noAuth();
+        List<String> destinations = Arrays.asList("NoAuthentication", "BasicAuthentication");
+
+        for (String destination : destinations) {
+            String result = callHttpDestination(destination);
+            System.out.println(result);
+        }
+
+
     }
 
     private static void mockExample() throws IOException {
@@ -42,13 +51,11 @@ public class App {
         execute.getEntity().writeTo(System.out);
     }
 
-    private static void noAuth() throws IOException {
-        HttpDestination httpDestination = DestinationAccessor.getDestination("NoAuthentication").asHttp();
+    private static String callHttpDestination(String destinationName) throws IOException {
+        HttpDestination httpDestination = DestinationAccessor.getDestination(destinationName).asHttp();
         HttpClient httpClient = HttpClientAccessor.getHttpClient(httpDestination);
 
         HttpResponse execute = httpClient.execute(new HttpGet());
-        String result = IOUtils.toString(execute.getEntity().getContent(), StandardCharsets.UTF_8);
-
-        System.out.println(result);
+        return IOUtils.toString(execute.getEntity().getContent(), StandardCharsets.UTF_8);
     }
 }
