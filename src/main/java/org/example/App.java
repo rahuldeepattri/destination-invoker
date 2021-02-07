@@ -5,6 +5,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.testutil.MockDestination;
 import com.sap.cloud.sdk.testutil.MockUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,13 +22,14 @@ import java.util.List;
  */
 //mvn exec:java -Dexec.mainClass="org.example.App"
 ////mvn clean package exec:java -Dexec.mainClass="org.example.App"
+@Slf4j
 public class App {
     public static void main(String[] args) throws Exception {
-        List<String> destinations = Arrays.asList("NoAuthentication", "BasicAuthentication");
+        List<String> destinations = Arrays.asList("NoAuthentication", "BasicAuthentication", "OAuth2ClientCredentials");
 
         for (String destination : destinations) {
             String result = callHttpDestination(destination);
-            System.out.println(result);
+            log.info(result);
         }
 
 
@@ -56,6 +58,7 @@ public class App {
         HttpClient httpClient = HttpClientAccessor.getHttpClient(httpDestination);
 
         HttpResponse execute = httpClient.execute(new HttpGet());
+        log.debug(execute.toString());
         return IOUtils.toString(execute.getEntity().getContent(), StandardCharsets.UTF_8);
     }
 }
