@@ -43,6 +43,11 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.testutil</groupId>
+      <artifactId>testutil-core</artifactId>
+    </dependency>
+
   </dependencies>
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
